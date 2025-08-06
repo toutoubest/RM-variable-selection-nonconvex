@@ -14,3 +14,7 @@ This repository contains code for robust and missing-data-aware variable selecti
 
 - Requires R (>= 4.0) and the following packages: `ncvreg`, `glmnet`, `robustbase`, `data.table`, `ggplot2`, etc.
 - See comments in the scripts for how to run synthetic and real data examples.
+
+## Real datasets:
+- Riboflavin dataset is in the R package hdi
+- Breast cancer dataset is in out github Breast_expression_original.csv 
