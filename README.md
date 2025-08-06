@@ -17,4 +17,4 @@ This repository contains code for robust and missing-data-aware variable selecti
 
 ## Real datasets:
 - Riboflavin dataset is in the R package hdi
-- Breast cancer dataset is in out github breast_expression_original.csv 
+- Breast cancer dataset is in our github breast_expression_original.csv 
