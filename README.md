@@ -4,11 +4,11 @@ This repository contains code for robust and missing-data-aware variable selecti
 
 ## File overview
 
--1. helper_funcs and synthetic .R:
-In this R file, we have the helper funcs and the synthetic dataset implementation code
+- **helper_funcs and synthetic .R**  
+  Contains helper functions and the synthetic dataset implementation code.
 
--2. Real datasets example code.R:
-This is the example code of 2 real datasets
+- **Real datasets example code.R**  
+  Example code for running our method on two real datasets.
 
 ## Getting started
 
