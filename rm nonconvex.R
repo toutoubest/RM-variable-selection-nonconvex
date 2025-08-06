@@ -120,7 +120,7 @@ run_em_algorithm <- function(X_miss, y, beta_true, nonzero_idx,
   data.frame(F1 = f1, TPR = recall, FDR = fdr, MCC = mcc_val, RMSE = rmse_val, Runtime = runtime)
 }
 
-##example code:#  Wrapper function to switch penalty
+#  Wrapper function to switch penalty
 run_experiment_with_penalty <- function(penalty_type, lambda = 0.3, runs = 50) {
   cat("\nRunning with", penalty_type, "penalty\n")
   overall_start <- Sys.time()
@@ -527,7 +527,7 @@ for (metric in unique_metrics) {
 }
 
 ########################## Synthetic data similarities of adjacent runs:
-# ---- Jaccard Similarity Function ----
+# Jaccard Similarity Function 
 compute_jaccard_similarity <- function(selection_list) {
   n <- length(selection_list)
   similarities <- numeric(n - 1)
@@ -541,7 +541,7 @@ compute_jaccard_similarity <- function(selection_list) {
   return(similarities)
 }
 
-# ---- Penalty-Specific Selection ----
+#  Penalty-Specific Selection 
 get_selection <- function(runs = 10, lambda = 0.3, method = "scad") {
   selected_list <- list()
   for (run in 1:runs) {
@@ -559,7 +559,7 @@ get_selection <- function(runs = 10, lambda = 0.3, method = "scad") {
   return(selected_list)
 }
 
-# ---- Hybrid Selection ----
+#  Hybrid Selection 
 get_hybrid_selection <- function(runs = 10, lambda = 0.3) {
   selected_list <- list()
   for (run in 1:runs) {
@@ -576,7 +576,7 @@ get_hybrid_selection <- function(runs = 10, lambda = 0.3) {
   return(selected_list)
 }
 
-# ---- Ensemble Selection ----
+# Ensemble Selection 
 get_ensemble_selection <- function(runs = 10, lambda = 0.3) {
   selected_list <- list()
   for (run in 1:runs) {
@@ -599,7 +599,7 @@ get_ensemble_selection <- function(runs = 10, lambda = 0.3) {
   return(selected_list)
 }
 
-# ---- Run Analysis ----
+# Run Analysis 
 run_similarity_analysis <- function(method = "scad", run_sizes = c(10, 20, 30, 40, 50), lambda = 0.3) {
   cat("\nRunning for penalty:", method, "\n")
   for (runs in run_sizes) {
@@ -630,7 +630,7 @@ run_similarity_analysis("log")
 run_similarity_analysis("hybrid")
 run_similarity_analysis("ensemble")
 
-#########Synthetic data ablation study:
+#######################Synthetic data ablation study:
 run_ablation_hybrid_experiment <- function(lambda = 0.3, runs = 50) {
   ablation_settings <- list(
     "SCAD + MCP + LOG" = c(1/3, 1/3, 1/3),
@@ -909,7 +909,7 @@ summary_stats <- results_all %>%
 #   left_join(total_runtime, by = "Method") %>%
 #   mutate(TotalTime = sprintf("%.2f sec", TotalTime))
 
-### Not adding the ttl time column:
+### Not adding the total run time column:
 summary_formatted <- summary_stats %>%
   mutate(
     SupportSize = sprintf("%.1f ± %.1f", SupportSize_mean, SupportSize_sd),
@@ -924,7 +924,7 @@ summary_formatted <- summary_stats %>%
 #  save it
 write.csv(summary_formatted, file = "summary_results.csv", row.names = FALSE)
 
-######################### Real dataset 1 the tp selected variables frequency under n runs(I didn't put it in the paper):
+######################### Real dataset 1 the top selected variables frequency under n runs(I didn't put it in the paper):
 # Load riboflavin data and prepare top 100 genes
 library(hdi)
 library(ggplot2)
@@ -1072,7 +1072,7 @@ for (method in names(freq_list)) {
   print(p)
 }
 
-################ real dataset 1: similarity for 10,20,30,40,50 runs:
+######################## real dataset 1: similarity for 10,20,30,40,50 runs:
 get_selection_realdata <- function(runs = 10, lambda = 0.3, method = "scad") {
   selected_list <- list()
   for (i in 1:runs) {
@@ -1193,12 +1193,7 @@ run_similarity_analysis_realdata("log")
 run_similarity_analysis_realdata("hybrid")
 run_similarity_analysis_realdata("ensemble")
 
-
-
-
-
-
-########################
+##############################################
 #Real data 2:breast Cancer Data
 library(ggplot2)
 library(dplyr)
@@ -1249,7 +1244,7 @@ summary_table <- combined_results %>%
 
 write.csv(summary_table, "REAL_DATA_summary_results.csv", row.names = FALSE)
 
-#plot the boxplot:
+##########################plot the boxplot:
 # Desired method order
 method_order <- c("scad", "mcp", "log", "hybrid", "ensemble")
 
@@ -1288,11 +1283,7 @@ for (i in seq_along(metric_names)) {
 }
 
 ############ real dataset 2 similarity:
-# -------------------------------
 # Breast Cancer Dataset Similarity Analysis
-# -------------------------------
-
-# Load necessary libraries
 library(dplyr)
 
 # Load Breast Cancer gene expression data
@@ -1300,127 +1291,14 @@ X <- as.matrix(read.csv("breast_expression_original.csv"))
 n <- nrow(X)
 p <- ncol(X)
 
-# Set parameters
+# parameters
 lambda <- 0.3
 run_sizes <- c(10, 20, 30, 40, 50)
 set.seed(123)
 
-#we still use the same helper funcs of real data 1 here.
+# we still use the same helper funcs of real data 1 here.
 
-# # Function: get_selection_realdata
-# get_selection_realdata <- function(runs = 10, lambda = 0.3, method = "scad") {
-#   selected_list <- list()
-#   for (i in 1:runs) {
-#     # Simulate sparse beta and response
-#     beta_true <- rep(0, p)
-#     nonzero_idx <- sample(1:p, min(10, p))
-#     beta_true[nonzero_idx] <- runif(length(nonzero_idx), -2, 2)
-#     y <- X %*% beta_true + rnorm(n)
-#     y <- as.numeric(scale(y))
-#     
-#     # Add missing values and outliers
-#     X_miss <- X
-#     miss_idx <- arrayInd(sample(1:(n * p), floor(n * p * 0.2)), .dim = c(n, p))
-#     X_miss[miss_idx] <- NA
-#     X_imp <- X_miss
-#     for (j in 1:p) {
-#       X_imp[is.na(X_imp[, j]), j] <- mean(X_imp[, j], na.rm = TRUE)
-#     }
-#     y[sample(1:n, floor(0.1 * n))] <- y[sample(1:n, floor(0.1 * n))] + rnorm(floor(0.1 * n), 0, 25)
-#     
-#     # EM and variable selection
-#     beta <- rep(0.01, p)
-#     for (em in 1:10) {
-#       X_df <- as.data.frame(X_imp)
-#       colnames(X_df) <- paste0("V", 1:p)
-#       for (j in 1:p) {
-#         obs <- !is.na(X_miss[, j])
-#         if (sum(obs) < n) {
-#           fit <- try(lm(as.formula(paste0("V", j, " ~ ", paste0("V", setdiff(1:p, j), collapse = "+"))), data = X_df[obs, ]), silent = TRUE)
-#           if (!inherits(fit, "try-error")) {
-#             X_df[!obs, j] <- predict(fit, newdata = X_df[!obs, ])
-#           }
-#         }
-#       }
-#       X_imp <- as.matrix(X_df)
-#       if (method == "hybrid") {
-#         beta <- coordinate_descent_hybrid(X_imp, y, beta, lambda)
-#       } else {
-#         beta <- coordinate_descent(X_imp, y, beta, lambda, method)
-#       }
-#     }
-#     selected_list[[i]] <- which(abs(beta) > 1e-4)
-#   }
-#   return(selected_list)
-# }
-# 
-# # Function: get_ensemble_realdata
-# get_ensemble_realdata <- function(runs = 10, lambda = 0.3) {
-#   selected_list <- list()
-#   for (i in 1:runs) {
-#     beta_true <- rep(0, p)
-#     nonzero_idx <- sample(1:p, min(10, p))
-#     beta_true[nonzero_idx] <- runif(length(nonzero_idx), -2, 2)
-#     y <- X %*% beta_true + rnorm(n)
-#     y <- as.numeric(scale(y))
-#     
-#     X_miss <- X
-#     miss_idx <- arrayInd(sample(1:(n * p), floor(n * p * 0.2)), .dim = c(n, p))
-#     X_miss[miss_idx] <- NA
-#     X_imp <- X_miss
-#     for (j in 1:p) {
-#       X_imp[is.na(X_imp[, j]), j] <- mean(X_imp[, j], na.rm = TRUE)
-#     }
-#     y[sample(1:n, floor(0.1 * n))] <- y[sample(1:n, floor(0.1 * n))] + rnorm(floor(0.1 * n), 0, 25)
-#     
-#     penalties <- c("scad", "mcp", "log")
-#     beta_list <- list()
-#     for (penalty in penalties) {
-#       beta <- rep(0.01, p)
-#       for (em in 1:10) {
-#         X_df <- as.data.frame(X_imp)
-#         colnames(X_df) <- paste0("V", 1:p)
-#         for (j in 1:p) {
-#           obs <- !is.na(X_miss[, j])
-#           if (sum(obs) < n) {
-#             fit <- try(lm(as.formula(paste0("V", j, " ~ ", paste0("V", setdiff(1:p, j), collapse = "+"))), data = X_df[obs, ]), silent = TRUE)
-#             if (!inherits(fit, "try-error")) {
-#               X_df[!obs, j] <- predict(fit, newdata = X_df[!obs, ])
-#             }
-#           }
-#         }
-#         X_imp <- as.matrix(X_df)
-#         beta <- coordinate_descent(X_imp, y, beta, lambda, penalty)
-#       }
-#       beta_list[[penalty]] <- beta
-#     }
-#     agree_mask <- (abs(beta_list$scad) > 1e-4) + (abs(beta_list$mcp) > 1e-4) + (abs(beta_list$log) > 1e-4)
-#     selected_idx <- which(agree_mask >= 2)
-#     selected_list[[i]] <- selected_idx
-#   }
-#   return(selected_list)
-# }
-# 
-# # Function: run_similarity_analysis_realdata
-# run_similarity_analysis_realdata <- function(method = "scad", run_sizes = c(10, 20, 30, 40, 50), lambda = 0.3) {
-#   for (runs in run_sizes) {
-#     if (method == "ensemble") {
-#       selected_list <- get_ensemble_realdata(runs, lambda)
-#     } else {
-#       selected_list <- get_selection_realdata(runs, lambda, method)
-#     }
-#     
-#     similarities <- compute_jaccard_similarity(selected_list)
-#     cat("\nMethod:", toupper(method), " | Runs:", runs, "\n")
-#     cat("Mean:", mean(similarities), 
-#         "SD:", sd(similarities), 
-#         "Median:", median(similarities), 
-#         "Min:", min(similarities), 
-#         "Max:", max(similarities), "\n")
-#   }
-# }
-
-# ---- Run All Methods ----
+# Run All Methods
 methods <- c("scad", "mcp", "log", "hybrid", "ensemble")
 for (m in methods) {
   run_similarity_analysis_realdata(method = m, run_sizes = run_sizes, lambda = lambda)
