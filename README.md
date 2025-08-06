@@ -4,7 +4,7 @@ This repository contains code for robust and missing-data-aware variable selecti
 
 ## File overview
 
--1.helper_funcs and synthetic .R:
+-1. helper_funcs and synthetic .R:
 In this R file, we have the helper funcs and the synthetic dataset implementation code
 
 -2. Real datasets example code.R:
