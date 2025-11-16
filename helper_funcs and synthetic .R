@@ -427,7 +427,6 @@ run_ensemble_experiment <- function(lambda = 0.3, runs = 50) {
 results_ensemble <- run_ensemble_experiment(runs = 50)
 
 #################### Different Lambda Curves for Each Penalty(synthetic data) 
-# I used runs=10 here
 lambda_seq <- c(0.05, 0.3, 0.6, 0.9)
 penalties <- c("scad", "mcp", "log", "hybrid", "ensemble")
 lambda_results <- list()
@@ -448,11 +447,15 @@ for (penalty in penalties) {
       names(res)[names(res) == "Mean...SD"] <- "Mean_SD"
     }
     
-    # Split Mean ± SD into separate columns
+    # Correct split (handles Total_Runtime)
     res_split <- res %>%
       mutate(
-        Mean = as.numeric(sub(" ±.*", "", Mean_SD)),
-        SD   = as.numeric(sub(".*± ", "", Mean_SD)),
+        Mean = ifelse(Metric == "Total_Runtime",
+                      as.numeric(Mean_SD),
+                      as.numeric(sub(" ±.*", "", Mean_SD))),
+        SD   = ifelse(Metric == "Total_Runtime",
+                      0,
+                      as.numeric(sub(".*± ", "", Mean_SD))),
         Lambda = lam,
         Penalty = penalty
       ) %>%
@@ -462,13 +465,10 @@ for (penalty in penalties) {
   }
 }
 
-# Combine and save
 df_lambda <- do.call(rbind, lambda_results)
 saveRDS(df_lambda, "df_lambda_results.rds")
 
-df_lambda_clean <- df_lambda %>%
-  filter(Metric != "Total_Runtime")
-
+df_lambda_clean <- df_lambda  # <-- no further mutate needed!
 unique_metrics <- unique(df_lambda_clean$Metric)
 penalty_levels <- c("scad", "mcp", "log", "hybrid", "ensemble")
 
@@ -491,14 +491,20 @@ penalty_colors <- c(
 )
 
 # All dashed line styles
+# penalty_linetypes <- c(
+#   "scad"     = "dashed",
+#   "mcp"      = "dashed",
+#   "log"      = "dashed",
+#   "hybrid"   = "dashed",
+#   "ensemble" = "dashed"
+# )                         
 penalty_linetypes <- c(
-  "scad"     = "dashed",
-  "mcp"      = "dashed",
-  "log"      = "dashed",
-  "hybrid"   = "dashed",
-  "ensemble" = "dashed"
+  "scad"     = "solid",
+  "mcp"      = "longdash",
+  "log"      = "twodash",
+  "hybrid"   = "dotdash",
+  "ensemble" = "dotted"
 )
-
 
 for (metric in unique_metrics) {
   plot_data <- df_lambda_clean %>% filter(Metric == metric)
