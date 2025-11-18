@@ -810,4 +810,9 @@ run_experiment_noise <- function(noise_type = "t6", runs = 3, lambda = 0.3) {
 summary_table_t6 <- run_experiment_noise("t6", runs = 3)
 summary_table_gauss5 <- run_experiment_noise("gauss5", runs = 3)
 summary_table_heavy <- run_experiment_noise("heavy", runs = 3)
+
+#write it                        
+write.csv(summary_table_t6, "NoiseResults_t6.csv", row.names = FALSE)
+write.csv(summary_table_gauss5, "NoiseResults_gauss5.csv", row.names = FALSE)
+write.csv(summary_table_heavy, "NoiseResults_heavy.csv", row.names = FALSE)
                          
