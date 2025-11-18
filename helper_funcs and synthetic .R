@@ -669,7 +669,7 @@ ablation_summary <- run_ablation_hybrid_experiment(runs = 50)
 print(ablation_summary)
 
 #####################################
-##############Revision 11/17/2025:
+##############Below Revision 11/17/2025:
 # Additional Noise Experiments (Reviewer 2 #6)
 #Some clarification of the large RMSE values reported for 
 # SCAD, MCP, LOG, and HYBRID in Table 2. To address this, we run an additional 
@@ -692,7 +692,6 @@ print(ablation_summary)
 # manuscript revision. It shows that single-penalty methods yield RMSE 
 # around 300 due to noisy false positives, while ENSEMBLE achieves RMSE 
 # around 2–3 due to consensus-based variable selection.
-###############################################################################
 
 generate_noise <- function(type, n) {
   if (type == "t6") {
