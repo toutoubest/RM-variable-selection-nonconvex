@@ -18,3 +18,12 @@ This repository contains code for robust and missing-data-aware variable selecti
 ## Real datasets:
 - Riboflavin dataset is in the R package hdi
 - Breast cancer dataset is in our github breast_expression_original.csv 
+
+This repository contains the code associated with the paper:
+
+**Zhang, Linging.**  
+*Introducing HYBRID and ENSEMBLE: novel nonconvex penalization strategies for robust variable selection under missing data*,  
+**Computational Statistics**, Springer Nature, 2025/12/26.
+
+The paper has been published online and can be accessed via the Springer Nature SharedIt link:  
+https://rdcu.be/eWph2
