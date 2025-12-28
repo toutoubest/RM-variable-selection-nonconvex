@@ -259,7 +259,7 @@ summary_formatted <- summary_stats %>%
 #  save it
 write.csv(summary_formatted, file = "summary_results.csv", row.names = FALSE)
 
-######################### Real dataset 1 the top selected variables frequency under n runs(I didn't put it in the paper):
+######################### Real dataset 1 the top selected variables frequency under n runs:
 # Load riboflavin data and prepare top 100 genes
 library(hdi)
 library(ggplot2)
