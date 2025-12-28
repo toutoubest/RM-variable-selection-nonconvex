@@ -27,3 +27,4 @@ This repository contains the code associated with the paper:
 
 The paper has been published online and can be accessed via the Springer Nature SharedIt link:  
 https://rdcu.be/eWph2
+DOI: https://doi.org/10.1007/s00180-025-01707-1
